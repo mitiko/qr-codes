@@ -3,35 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>QR code reader</title>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
-<body>
+<body style="font-family: sans-serif;">
 
-<p> Hello! </p>
-
+<h1 id="count">Fetching...</h1>
 <div id="reader" width="90%" style="margin-inline: auto"></div>
-<div id="list"></div>
 
 <script>
-function onScanSuccess(decodedText, decodedResult) {
-    console.log(`Code matched = ${decodedText}`, decodedResult);
-    fetch(`/api/barcode?text=${decodedText}`)
-        .then(res => res.text())
-        .then(txt => alert(txt))
-        .catch(err => console.warn(err));
-    document.getElementById("list").innerText += `dec: "${decodedText}"\n`;
-}
-function onScanFailure(error) {
-    console.warn(`Code scan error = ${error}`);
-}
-let html5QrcodeScanner = new Html5QrcodeScanner(
-    "reader",
-    { fps: 10, qrbox: {width: 250, height: 250} },
-    /* verbose= */ false
-);
-html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+const updateCount = () => fetch("/count")
+    .then(res => res.text())
+    .then(txt => document.getElementById("count").innerText = `Count: ${txt}`)
+    .catch(console.warn);
+
+updateCount(); // initial fetch
+
+const scan = (text, _) => fetch(`/add?text=${text}`).then(updateCount).catch(console.warn);
+const writeData = () => fetch("/write").catch(console.warn);
+
+let qrSanncer = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
+qrSanncer.render(scan, console.warn);
 </script>
+
+<button style="font-size: 1.4rem; margin: 1.5rem auto;" onclick="writeData()">Write!</button>
 
 </body>
 </html>

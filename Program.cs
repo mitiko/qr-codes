@@ -1,8 +1,15 @@
+var hashset = new HashSet<string>(); // globals <3
 var app = WebApplication.CreateBuilder(args).Build();
 
-app.MapPost("/api/barcode", (string text) => {
-    Console.WriteLine($"Text: {text}");
-    return "cool!";
+app.Map("/count", () => hashset.Count);
+app.Map("/add", (string text) => hashset.Add(text));
+
+app.Map("/write", async () => {
+    var writer = File.CreateText("codes.txt");
+    foreach (var code in hashset)
+        await writer.WriteLineAsync(code);
+    await writer.FlushAsync();
+    writer.Close();
 });
 
 app.UseDefaultFiles();
