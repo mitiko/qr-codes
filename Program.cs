@@ -5,7 +5,7 @@ app.Map("/count", () => hashset.Count);
 app.Map("/add", (string text) => hashset.Add(text));
 
 app.Map("/write", async () => {
-    var writer = File.CreateText("codes.txt");
+    var writer = File.CreateText("qr-codes.txt");
     foreach (var code in hashset)
         await writer.WriteLineAsync(code);
     await writer.FlushAsync();
