@@ -1,8 +1,10 @@
-var builder = WebApplication.CreateBuilder(args);
+var app = WebApplication.CreateBuilder(args).Build();
 
-builder.Services.AddRazorPages();
+app.MapPost("/api/barcode", (string text) => {
+    Console.WriteLine($"Text: {text}");
+    return "cool!";
+});
 
-var app = builder.Build();
-
-app.MapRazorPages();
-app.Run();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.Run("https://0.0.0.0:5001");
