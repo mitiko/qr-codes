@@ -3,6 +3,7 @@ var app = WebApplication.CreateBuilder(args).Build();
 
 app.Map("/count", () => hashset.Count);
 app.Map("/add", (string text) => hashset.Add(text));
+app.Map("/reset", () => hashset.Clear());
 
 app.Map("/write", async () => {
     var writer = File.CreateText("qr-codes.txt");

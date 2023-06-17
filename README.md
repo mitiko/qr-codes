@@ -3,6 +3,9 @@
 Scan multiple QR codes and save the decoded text to a file.  
 Made with a simple .NET server + [qr reader library](https://github.com/mebjas/html5-qrcode) in under 100LoC.
 
+Uses an in-memory hashset as database, intended for single user fast scanning.
+I managed to scan 68 qr codes from receipts in under 2 mins.
+
 ## Use
 
 Run the server: `dotnet run`  
